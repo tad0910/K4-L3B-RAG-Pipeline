@@ -107,12 +107,35 @@ def call_llm(system_prompt: str, user_message: str) -> str:
         from google import genai
 
         client = genai.Client(api_key=gemini_key)
-        response = client.models.generate_content(
-            model=model or "gemini-2.0-flash",
-            contents=f"{system_prompt}\n\n{user_message}",
-            config={"temperature": TEMPERATURE, "top_p": TOP_P},
-        )
-        return response.text or ""
+        target_model = model or "gemini-2.5-flash"
+        if target_model == "gemini-2.0-flash":
+            target_model = "gemini-2.5-flash"
+
+        # List of candidate models to try in case of deprecation/availability
+        candidates = [target_model]
+        for fallback in ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash-lite"]:
+            if fallback not in candidates:
+                candidates.append(fallback)
+
+        last_err = None
+        for cand in candidates:
+            try:
+                response = client.models.generate_content(
+                    model=cand,
+                    contents=f"{system_prompt}\n\n{user_message}",
+                    config={"temperature": TEMPERATURE, "top_p": TOP_P},
+                )
+                return response.text or ""
+            except Exception as e:
+                last_err = e
+                # If error is model not found or unavailable, continue to next fallback candidate
+                err_str = str(e).lower()
+                if "404" in str(e) or "not_found" in err_str or "not available" in err_str:
+                    continue
+                # For auth or other critical errors, raise immediately
+                raise e
+        if last_err:
+            raise last_err
 
     if provider == "anthropic":
         from anthropic import Anthropic
