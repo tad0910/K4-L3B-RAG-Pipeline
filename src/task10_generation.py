@@ -52,8 +52,8 @@ def format_context(chunks: list[dict]) -> str:
 
 def call_llm(system_prompt: str, user_message: str) -> str:
     """Gọi OpenAI, Gemini hoặc Anthropic theo cấu hình."""
-    provider = LLM_PROVIDER.lower().strip()
-    model = LLM_MODEL.strip()
+    provider = os.getenv("LLM_PROVIDER", LLM_PROVIDER).lower().strip()
+    model = os.getenv("LLM_MODEL", LLM_MODEL).strip()
 
     if provider == "openai":
         from openai import OpenAI
@@ -118,7 +118,7 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     )
     try:
         answer = call_llm(SYSTEM_PROMPT, user_message).strip()
-    except (ImportError, KeyError, OSError, RuntimeError, ValueError):
+    except Exception:
         answer = "Tôi đã tìm thấy nguồn tham khảo nhưng chưa thể tạo câu trả lời lúc này."
     if not answer:
         answer = refusal
