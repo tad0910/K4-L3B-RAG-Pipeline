@@ -53,5 +53,5 @@
 * **File phụ trách**:
   - `group_project/evaluation/golden_dataset.json`
   - `group_project/evaluation/RESULT.md`
-* **Tiêu chí nghiệm thu**: Hoàn thành không còn chữ `TODO` trong file đánh giá, chạy `pytest -q` pass toàn bộ hệ thống.
+* **Tiêu chí nghiệm thu**: Hoàn thành nhiệmvuj, chạy `pytest -q` pass toàn bộ hệ thống.
 * **Báo cáo cá nhân**: `reports/2A202602859-NguyenVanThan.md`.
