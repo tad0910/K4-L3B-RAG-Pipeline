@@ -59,4 +59,6 @@ Hai config phải dùng cùng golden dataset, generator, evaluator, prompt và `
 | ---------- | -------- | -----------: | -----------------: | ---------- |
 | Dùng LLM prompt có chain-of-thought | Prompt cơ bản | +0.03 | +30% cost, +1.5s latency | Cải thiện nhẹ nhưng độ trễ tăng cao, không phù hợp cho chat realtime |
 | Conversation Memory (Query Contextualization) | RAG không nhớ ngữ cảnh | +0.18 Context recall trên follow-up | +180ms latency cho câu hỏi nối tiếp | Cho phép trả lời chính xác các câu hỏi nối tiếp có đại từ thay thế; đã tích hợp demo trực tiếp trên Streamlit app |
+| Deploy Streamlit Cloud Online | Chạy local máy trạm | Truy cập trực tiếp mọi thiết bị | 0đ (Free tier) | Đã deploy online công khai tại: https://k4-l3b-rag-pipeline-c3apwr2nvaakzl3bu6gbn5.streamlit.app/ |
+
 

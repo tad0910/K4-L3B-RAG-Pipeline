@@ -2,7 +2,8 @@
 
 **Tên nhóm**: Gene  
 **Đề tài**: Hệ thống RAG Hỏi đáp Tuyển sinh Đại học (Hybrid Retrieval + Citation + Streamlit UI)  
-**Repository**: `K4-L3B-RAG-Pipeline`
+**Repository**: `K4-L3B-RAG-Pipeline`  
+**Live Demo**: [https://k4-l3b-rag-pipeline-c3apwr2nvaakzl3bu6gbn5.streamlit.app/](https://k4-l3b-rag-pipeline-c3apwr2nvaakzl3bu6gbn5.streamlit.app/)
 
 ---
 

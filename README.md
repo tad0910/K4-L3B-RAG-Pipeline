@@ -1,5 +1,7 @@
 # Day 8 — RAG Pipeline
 
+🌐 **Live Demo App**: [https://k4-l3b-rag-pipeline-c3apwr2nvaakzl3bu6gbn5.streamlit.app/](https://k4-l3b-rag-pipeline-c3apwr2nvaakzl3bu6gbn5.streamlit.app/)
+
 ## Mục tiêu
 
 Mỗi nhóm xây dựng một chatbot RAG trả lời câu hỏi từ bộ tài liệu do nhóm thu thập. Sản phẩm phải có hybrid retrieval, citation, giao diện chat và báo cáo đánh giá.
