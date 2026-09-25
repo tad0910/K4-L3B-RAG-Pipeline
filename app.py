@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from pathlib import Path
 from dotenv import load_dotenv
@@ -5,6 +6,14 @@ from dotenv import load_dotenv
 from src.task10_generation import call_llm, generate_with_citation
 
 load_dotenv()
+
+# Nạp Streamlit secrets vào os.environ
+try:
+    for k, v in st.secrets.items():
+        if isinstance(v, str) and k not in os.environ:
+            os.environ[k] = v
+except Exception:
+    pass
 
 
 def contextualize_query(query: str, chat_history: list[dict]) -> str:

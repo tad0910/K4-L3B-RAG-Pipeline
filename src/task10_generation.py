@@ -50,15 +50,42 @@ def format_context(chunks: list[dict]) -> str:
     return "\n\n---\n\n".join(parts)
 
 
+def _get_secret_or_env(key: str, default: str = "") -> str:
+    val = os.getenv(key)
+    if val:
+        return val
+    try:
+        import streamlit as st
+        if key in st.secrets:
+            return str(st.secrets[key])
+    except Exception:
+        pass
+    return default
+
+
 def call_llm(system_prompt: str, user_message: str) -> str:
     """Gọi OpenAI, Gemini hoặc Anthropic theo cấu hình."""
-    provider = os.getenv("LLM_PROVIDER", LLM_PROVIDER).lower().strip()
-    model = os.getenv("LLM_MODEL", LLM_MODEL).strip()
+    provider = _get_secret_or_env("LLM_PROVIDER", "").lower().strip()
+    gemini_key = _get_secret_or_env("GEMINI_API_KEY")
+    openai_key = _get_secret_or_env("OPENAI_API_KEY")
+    anthropic_key = _get_secret_or_env("ANTHROPIC_API_KEY")
+
+    if not provider:
+        if gemini_key:
+            provider = "gemini"
+        elif openai_key:
+            provider = "openai"
+        elif anthropic_key:
+            provider = "anthropic"
+        else:
+            provider = "openai"
+
+    model = _get_secret_or_env("LLM_MODEL", LLM_MODEL).strip()
 
     if provider == "openai":
         from openai import OpenAI
 
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        client = OpenAI(api_key=openai_key)
         response = client.chat.completions.create(
             model=model or "gpt-4o-mini",
             temperature=TEMPERATURE,
@@ -73,7 +100,7 @@ def call_llm(system_prompt: str, user_message: str) -> str:
     if provider == "gemini":
         from google import genai
 
-        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+        client = genai.Client(api_key=gemini_key)
         response = client.models.generate_content(
             model=model or "gemini-2.0-flash",
             contents=f"{system_prompt}\n\n{user_message}",
@@ -84,7 +111,7 @@ def call_llm(system_prompt: str, user_message: str) -> str:
     if provider == "anthropic":
         from anthropic import Anthropic
 
-        client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+        client = Anthropic(api_key=anthropic_key)
         response = client.messages.create(
             model=model or "claude-3-5-haiku-latest",
             max_tokens=1200,
@@ -118,8 +145,9 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     )
     try:
         answer = call_llm(SYSTEM_PROMPT, user_message).strip()
-    except Exception:
-        answer = "Tôi đã tìm thấy nguồn tham khảo nhưng chưa thể tạo câu trả lời lúc này."
+    except Exception as err:
+        print(f"[LLM Error] {err}", flush=True)
+        answer = f"Tôi đã tìm thấy nguồn tham khảo nhưng chưa thể tạo câu trả lời lúc này (Chi tiết lỗi: {err})."
     if not answer:
         answer = refusal
 
