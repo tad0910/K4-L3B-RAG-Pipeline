@@ -14,7 +14,7 @@
 | `top_k`                            | 3 |
 | Fallback threshold and calibration | 0.45 (calibrated on in-domain vs out-domain queries) |
 
-## Configurations
+## Configuration
 
 - **Config A — dense-only:** Retrieval by text-embedding-3-small only, top_k = 3
 - **Config B — hybrid + RRF:** Retrieval by dense (text-embedding-3-small) + BM25, combined with Reciprocal Rank Fusion (k=60), top_k = 3
