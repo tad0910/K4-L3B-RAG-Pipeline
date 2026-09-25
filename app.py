@@ -2,9 +2,42 @@ import streamlit as st
 from pathlib import Path
 from dotenv import load_dotenv
 
-from src.task10_generation import generate_with_citation
+from src.task10_generation import call_llm, generate_with_citation
 
 load_dotenv()
+
+
+def contextualize_query(query: str, chat_history: list[dict]) -> str:
+    """Tự động viết lại câu hỏi nối tiếp (follow-up) dựa trên lịch sử hội thoại."""
+    past_conversations = [
+        m for m in chat_history if m.get("content") and m.get("content") != query
+    ]
+    if len(past_conversations) < 2:
+        return query
+
+    recent_turns = past_conversations[-4:]
+    history_text = "\n".join(
+        f"{'Người dùng' if m['role'] == 'user' else 'Trợ lý'}: {m['content']}"
+        for m in recent_turns
+    )
+
+    system_prompt = (
+        "Bạn là trợ lý xử lý ngữ cảnh câu hỏi tuyển sinh. "
+        "Dựa vào lịch sử hội thoại gần nhất, nếu câu hỏi mới của người dùng là câu hỏi nối tiếp "
+        "(chứa đại từ thay thế như 'ngành này', 'nó', 'học phí bao nhiêu', 'thời gian đào tạo', hoặc bị khuyết chủ ngữ), "
+        "hãy viết lại câu hỏi đó thành một câu hỏi độc lập, đầy đủ thông tin để tìm kiếm tài liệu. "
+        "Nếu câu hỏi đã đầy đủ thông tin hoặc không liên quan đến câu trước, hãy giữ nguyên câu hỏi gốc. "
+        "QUAN TRỌNG: Chỉ trả lời duy nhất câu hỏi đã viết lại, không thêm bất kỳ từ ngữ hay giải thích nào."
+    )
+    user_prompt = f"Lịch sử hội thoại:\n{history_text}\n\nCâu hỏi mới: {query}\n\nCâu hỏi độc lập:"
+
+    try:
+        rewritten = call_llm(system_prompt, user_prompt).strip()
+        if rewritten and len(rewritten) >= 4 and not rewritten.startswith("Error"):
+            return rewritten
+    except Exception:
+        pass
+    return query
 
 # ──────────────────────── Page config ────────────────────────
 st.set_page_config(
@@ -552,8 +585,12 @@ if query:
         st.markdown(query)
 
     with st.chat_message("assistant"):
+        standalone_query = contextualize_query(query, st.session_state.messages)
+        if standalone_query != query:
+            st.caption(f"🧠 *Đã hiểu theo ngữ cảnh:* `{standalone_query}`")
+
         with st.spinner("Đang đối chiếu tài liệu tuyển sinh..."):
-            result = generate_with_citation(query, top_k=top_k)
+            result = generate_with_citation(standalone_query, top_k=top_k)
         st.markdown(result["answer"])
         if result["sources"]:
             with st.expander(f"📎 Nguồn tham khảo ({len(result['sources'])})"):
