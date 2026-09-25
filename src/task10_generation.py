@@ -80,6 +80,12 @@ def call_llm(system_prompt: str, user_message: str) -> str:
         else:
             provider = "openai"
 
+    # Phòng ngừa trường hợp người dùng đặt nhầm tên biến (ví dụ chọn gemini nhưng gán vào OPENAI_API_KEY)
+    if provider == "gemini" and not gemini_key and openai_key:
+        gemini_key = openai_key
+    elif provider == "openai" and not openai_key and gemini_key:
+        openai_key = gemini_key
+
     model = _get_secret_or_env("LLM_MODEL", LLM_MODEL).strip()
 
     if provider == "openai":
