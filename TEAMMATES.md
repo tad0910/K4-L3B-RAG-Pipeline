@@ -11,10 +11,10 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò (Role) | Nhánh (Branch) | Module & Phần việc phụ trách |
 | :---: | :--- | :---: | :--- | :--- | :--- |
-| **1** | **Dương Đức Vương** | **2A202602944** | **Data & Ingestion Engineer** (Role A) | `feat/data-ingestion` | - Task 1: Thu thập ≥3 tài liệu pháp lý/quy chế tuyển sinh (`.pdf`, `.docx`).<br>- Task 2: Crawl ≥5 tin tức/thông báo tuyển sinh (`.json`).<br>- Task 3: Chuẩn hóa toàn bộ dữ liệu sang Markdown (`.md`).<br>- Task 4: Chunking văn bản, embedding và nạp vào ChromaDB vector database. |
-| **2** | **Lục Tiến Đạt** | **2A202602969** | **Search & Retrieval Engineer** (Role B) | `feat/retrieval-pipeline` | - Task 5: Semantic Search (ChromaDB + Cosine similarity).<br>- Task 6: Lexical Search (BM25Okapi + IDF floor calibration).<br>- Task 7: Reranking thuật toán Reciprocal Rank Fusion (RRF $k=60$).<br>- Task 8: PageIndex vectorless search & caching fallback.<br>- Task 9: Retrieval Pipeline tích hợp và kiểm soát ngưỡng tin cậy. |
-| **3** | **Nguyễn Thành Tiến** | **2A202603003** | **LLM & Application Engineer** (Role C) | `feat/generation-ui` | - Task 10: Generation có Citation, Context reordering chống Lost-in-the-middle, LLM dispatch (OpenAI/Gemini) và Safe refusal khi thiếu bằng chứng.<br>- `app.py`: Xây dựng giao diện Chatbot tương tác trên Streamlit (hiển thị câu trả lời, trích dẫn nguồn, retrieval method và điểm số). |
-| **4** | **Nguyễn Văn Thân** | **2A202602859** | **Evaluation & QA Engineer** (Role D) | `feat/evaluation-benchmark` | - Xây dựng Golden Dataset (≥15 test cases grounded trong corpus).<br>- Đánh giá định lượng qua 4 chỉ số (Faithfulness, Answer Relevance, Context Recall, Context Precision).<br>- Thực nghiệm so sánh A/B (Config A: Dense-only vs Config B: Hybrid+RRF).<br>- Hoàn thiện báo cáo nhóm `group_project/evaluation/RESULT.md` và triển khai tính năng Bonus. |
+| **1** | **Dương Đức Vương** | **2A202602944** | **Data & Ingestion Engineer** | `feat/data-ingestion` | - Task 1: Thu thập ≥3 tài liệu pháp lý/quy chế tuyển sinh (`.pdf`, `.docx`).<br>- Task 2: Crawl ≥5 tin tức/thông báo tuyển sinh (`.json`).<br>- Task 3: Chuẩn hóa toàn bộ dữ liệu sang Markdown (`.md`).<br>- Task 4: Chunking văn bản, embedding và nạp vào ChromaDB vector database. |
+| **2** | **Lục Tiến Đạt** | **2A202602969** | **Search & Retrieval Engineer** | `feat/retrieval-pipeline` | - Task 5: Semantic Search (ChromaDB + Cosine similarity).<br>- Task 6: Lexical Search (BM25Okapi + IDF floor calibration).<br>- Task 7: Reranking thuật toán Reciprocal Rank Fusion (RRF $k=60$).<br>- Task 8: PageIndex vectorless search & caching fallback.<br>- Task 9: Retrieval Pipeline tích hợp và kiểm soát ngưỡng tin cậy. |
+| **3** | **Nguyễn Thành Tiến** | **2A202603003** | **LLM & Application Engineer** | `feat/generation-ui` | - Task 10: Generation có Citation, Context reordering chống Lost-in-the-middle, LLM dispatch (OpenAI/Gemini) và Safe refusal khi thiếu bằng chứng.<br>- `app.py`: Xây dựng giao diện Chatbot tương tác trên Streamlit (hiển thị câu trả lời, trích dẫn nguồn, retrieval method và điểm số). |
+| **4** | **Nguyễn Văn Thân** | **2A202602859** | **Evaluation & QA Engineer** | `feat/evaluation-benchmark` | - Xây dựng Golden Dataset (≥15 test cases grounded trong corpus).<br>- Đánh giá định lượng qua 4 chỉ số (Faithfulness, Answer Relevance, Context Recall, Context Precision).<br>- Thực nghiệm so sánh A/B (Config A: Dense-only vs Config B: Hybrid+RRF).<br>- Hoàn thiện báo cáo nhóm `group_project/evaluation/RESULT.md` và triển khai tính năng Bonus. |
 
 ---
 
@@ -54,5 +54,5 @@
 * **File phụ trách**:
   - `group_project/evaluation/golden_dataset.json`
   - `group_project/evaluation/RESULT.md`
-* **Tiêu chí nghiệm thu**: Hoàn thành nhiệmvuj, chạy `pytest -q` pass toàn bộ hệ thống.
+* **Tiêu chí nghiệm thu**: Hoàn thành nhiệm vụ, chạy `pytest -q` pass toàn bộ hệ thống.
 * **Báo cáo cá nhân**: `reports/2A202602859-NguyenVanThan.md`.
